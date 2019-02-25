@@ -1,27 +1,21 @@
 import RPi.GPIO as GPIO
 
+from types import TracebackType
+from typing import Optional, Type
+
 
 class AppConfig:
-    """
-    Конфигурация приложения
-    """
-
-    def __init__(self, sensors: list):
-        self.sensors = sensors
 
     def __enter__(self):
         """
-        Предварительная настройка перед стартом приложения
+        Pre-setting before starting the application
         """
         GPIO.setmode(GPIO.BOARD)
-        for s in self.sensors:
-            s.setup()
         return self
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, type: Optional[Type[BaseException]], value: Optional[BaseException],
+                 traceback: Optional[TracebackType]):
         """
-        Дейстия перед остановкой приложения
+        Action before stopping the application
         """
-        for s in self.sensors:
-            s.destroy()
         GPIO.cleanup()

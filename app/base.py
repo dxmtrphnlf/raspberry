@@ -1,49 +1,37 @@
 import RPi.GPIO as GPIO
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 
 
 class BaseSensor(metaclass=ABCMeta):
     """
-    Абстрактный класс для всех датчиков
-    pin = числовое значения пина подключения
+    Abstract class for all sensors
     """
-    pin = None
+    gpio = GPIO
 
-    @abstractmethod
-    def setup(self):
-        """
-        Действия по предварительной настройки датчика
-        """
-        pass
-
-    @abstractmethod
-    def destroy(self):
-        """
-        Действия до удаления датчика или до остановки работы приложения
-        """
-        pass
+    def __init__(self, pin: int):
+        assert pin > 0, 'Pin must be positive int value'
+        self.pin = pin
 
 
 class InputSensor(BaseSensor, metaclass=ABCMeta):
     """
-    Абстрактный класс для датчиков, которые принимают информацию
+    Abstract class for sensors that accept information
     """
 
-    def setup(self):
-        GPIO.setup(self.pin, GPIO.IN)
-
-    def destroy(self):
-        pass
+    def __init__(self, pin: int):
+        super(InputSensor, self).__init__(pin)
+        self.gpio.setup(pin, GPIO.IN)
 
 
 class OutputSensor(BaseSensor, metaclass=ABCMeta):
     """
-    Абстрактный класс для датчиков, которые выводят информацию
+    Abstract class for sensors that display information
     """
 
-    def setup(self):
-        GPIO.setup(self.pin, GPIO.OUT)
+    def __init__(self, pin: int):
+        super(OutputSensor, self).__init__(pin)
+        self.gpio.setup(pin, GPIO.OUT)
 
-    def destroy(self):
-        GPIO.output(self.pin, GPIO.LOW)
-        GPIO.setup(self.pin, GPIO.LOW)
+    def __del__(self):
+        self.gpio.output(self.pin, GPIO.LOW)
+        self.gpio.setup(self.pin, GPIO.LOW)
