@@ -1,0 +1,4 @@
+version: '3'
+services:
+  raspberry-app:
+    command: python app/main.py

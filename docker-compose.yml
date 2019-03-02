@@ -1,12 +1,11 @@
 version: '3'
 services:
-  app:
+  raspberry-app:
     build: ./app
-    command: python main.py
     container_name: raspberry-app
     restart: always
     volumes:
-      - ./app:/raspberry
+      - .:/raspberry
     stdin_open: true
     tty: true
 

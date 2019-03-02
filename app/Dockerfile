@@ -11,4 +11,4 @@ RUN pip install --no-cache-dir -r /raspberry/requirements.txt
 
 WORKDIR /raspberry
 
-COPY app .
+COPY . .
