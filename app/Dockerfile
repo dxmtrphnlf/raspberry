@@ -6,7 +6,7 @@ RUN mkdir -p /raspberry
 
 RUN pip install --upgrade pip
 
-ADD app/requirements.txt /raspberry
+ADD requirements.txt /raspberry
 RUN pip install --no-cache-dir -r /raspberry/requirements.txt
 
 WORKDIR /raspberry
