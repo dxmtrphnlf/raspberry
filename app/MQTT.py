@@ -28,9 +28,9 @@ class MQTT:
         message_info = self.client.publish(topic=topic, payload=payload, retain=retain, **kwargs)
         message_info.wait_for_publish()
         if message_info.is_published():
-            log.info(f'Successful published message "{msg}" to topic {topic}')
+            log.info(f'Successful published message "{payload}" to topic {topic}')
             return True
-        log.info(f'Publishing error for message "{msg}" to topic {topic}')
+        log.info(f'Publishing error for message "{payload}" to topic {topic}')
         return False
 
     def __del__(self):
