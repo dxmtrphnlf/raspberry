@@ -3,7 +3,7 @@ from typing import Callable
 
 from base import InputSensor, OutputSensor
 
-from app.MQTT import MQTT
+from MQTT import MQTT
 
 
 class Laser(OutputSensor):
@@ -33,8 +33,8 @@ class Button(InputSensor):
     is_on = False
     mqtt = None
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, pin: int):
+        super().__init__(pin)
         try:
             self.mqtt = MQTT()
         except ConnectionError:
