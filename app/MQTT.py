@@ -1,6 +1,7 @@
 import logging
-
 from paho.mqtt.client import Client
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__name__)
 
 
 class MQTT:
@@ -16,20 +17,20 @@ class MQTT:
     def connect(self, host: str, port: int = 1883, keepalive: int = 60, **kwargs):
         is_connected = self.client.connect(host=host, port=port, keepalive=keepalive, **kwargs)
         if is_connected in range(3):
-            logging.info('Successful connect')
+            log.info('Successful connect')
             return True
         raise ConnectionError(f'MQTT connection error id {is_connected}')
 
     def _on_message(self, client, userdata, msg):
-        logging.info(f'{msg.topic} {msg.payload!s}')
+        log.info(f'{msg.topic} {msg.payload!s}')
 
     def pulish(self, topic: str, payload: str = None, retain: bool = False, **kwargs):
         message_info = self.client.publish(topic=topic, payload=payload, retain=retain, **kwargs)
         message_info.wait_for_publish()
         if message_info.is_published():
-            logging.info(f'Successful published message "{msg}" to topic {topic}')
+            log.info(f'Successful published message "{msg}" to topic {topic}')
             return True
-        logging.info(f'Publishing error for message "{msg}" to topic {topic}')
+        log.info(f'Publishing error for message "{msg}" to topic {topic}')
         return False
 
     def __del__(self):
